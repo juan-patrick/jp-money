@@ -17,22 +17,32 @@ ReactModal.setAppElement('#root');
 export function NewTransactionModal({
   isOpen, onRequestClose
 }: NewTransactionModalProps) {
-  const { transactions, createTransaction } = useContext(TransactionsContext);
+  const { createTransaction } = useContext(TransactionsContext);
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState(0);
   const [type, setType] = useState('deposit');
 
-  function handleCreateNewTransaction(event: FormEvent) {
+  function resetFields() {
+    setTitle('');
+    setCategory('');
+    setAmount(0);
+    setType('deposit');
+  }
+
+  async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
 
-    createTransaction({
+    await createTransaction({
       title,
       amount: amount,
       category,
       type
     })
+    onRequestClose();
+
+    resetFields();
   }
 
   return (
